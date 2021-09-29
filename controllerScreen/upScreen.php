@@ -77,6 +77,21 @@ if(checkAuth()){
             }
         }
         
+        if(isset($_POST['list_temp'])){
+            if($_POST['list_temp'] === ''){
+                $list_temp = $_POST['list_temp'];
+                $dateStart = $_POST['dateStart'];
+                $dateEnd = $_POST['dateEnd'];
+                $db_selection = mysqli_query($conn, "UPDATE screens SET `list_temp` = null, `dateStart`= null, `dateEnd`= null WHERE id = '$id'");
+                $successs = $infosSucc + 1;
+            }else{
+                $list_temp = $_POST['list_temp'];
+                $dateStart = $_POST['dateStart'];
+                $dateEnd = $_POST['dateEnd'];
+                $db_selection = mysqli_query($conn, "UPDATE screens SET `list_temp` = '$list_temp', `dateStart`= '$dateStart', `dateEnd`= '$dateEnd' WHERE id = '$id'");
+                $successs = $infosSucc + 1;
+            }
+        }
 
         if(isset($_POST['list_id'])){
             if(!empty($_POST['list_id'])){

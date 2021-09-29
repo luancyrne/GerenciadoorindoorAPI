@@ -10,6 +10,7 @@ if(checkAuth()){
     if(isset($_POST['id'])){
         if(!empty($_POST['id'])){
             $id = $_POST['id'];
+            $db_selection = mysqli_query($conn, "DELETE FROM contents WHERE `listid` = '$id'");
             $db_selection = mysqli_query($conn, "DELETE FROM list WHERE id = '$id'");
             $alert = array('message'=>"Lista '$id' deletada ", 'type'=>'success');
             echo json_encode($alert); 

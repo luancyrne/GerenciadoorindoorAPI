@@ -1,7 +1,7 @@
 <?php
 	$servidor = "localhost";
 	$usuario = "u961308898_indoor";
-	$senha = "Y4Wl+G/l";
+	$senha = "VkO*D1f~";
 	$dbname = "u961308898_indoor";
 	
 	//Criar a conexao

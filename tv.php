@@ -27,11 +27,11 @@ include_once 'conexao.php';
 
         html,
         body {
-                height: 100vh;
-    width: 100vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         #horizontal {
@@ -45,16 +45,16 @@ include_once 'conexao.php';
         }
 
         #vertical {
-                height: 100%;
-                width: 100%;
+            height: 100%;
+            width: 100%;
         }
 
         #vertical>div>img {
-        height: 100vw;
-        width: 100vh;
-    transform: rotate(270deg);
+            height: 100vw;
+            width: 100vh;
+            transform: rotate(270deg);
         }
-        
+
         .mySlides {
             height: 100%;
             width: 100%;
@@ -173,34 +173,61 @@ include_once 'conexao.php';
     $listimg;
     $divel;
     $rotation;
+    $list_temp;
+    $temp_img;
+    $dateStart;
+    $dateEnd;
     if (isset($_GET['view'])) {
         if (!empty($_GET['view'])) {
             $link = $_GET['view'];
-            $db_selection = mysqli_query($conn, "SELECT `list_id`, `rotation` FROM `screens` WHERE `link` = '$link' LIMIT 1 ");
+            $db_selection = mysqli_query($conn, "SELECT `list_id`, `rotation`, `list_temp`, `dateStart`, `dateEnd` FROM `screens` WHERE `link` = '$link' LIMIT 1 ");
             $result = mysqli_fetch_assoc($db_selection);
             if ($result) {
                 $rotation = $result['rotation'];
                 $listid = $result['list_id'];
-                $db_selection = mysqli_query($conn, "SELECT `id` FROM `list` WHERE `id` = '$listid' LIMIT 1 ");
-                $result = mysqli_fetch_assoc($db_selection);
-                if ($result) {
-                    $listid = $result['id'];
-                    $db_selection = mysqli_query($conn, "SELECT * FROM `contents` WHERE `listid` = '$listid'");
-                    $result = mysqli_fetch_all($db_selection, MYSQLI_ASSOC);
-                    $countImgs = count($result, COUNT_NORMAL);
-                    $divel = "<div id=" . $rotation . " class='slideshow-container'>";
-                    $listimg = $result;
+                $list_temp = $result['list_temp'];
+                $dateStart = $result['dateStart'];
+                $dateEnd = $result['dateEnd'];
+                if ($list_temp === null) {
+                    $db_selection = mysqli_query($conn, "SELECT `id` FROM `list` WHERE `id` = '$listid' LIMIT 1 ");
+                    $result = mysqli_fetch_assoc($db_selection);
+                    if ($result) {
+                        $listid = $result['id'];
+                        $db_selection = mysqli_query($conn, "SELECT * FROM `contents` WHERE `listid` = '$listid'");
+                        $result = mysqli_fetch_all($db_selection, MYSQLI_ASSOC);
+                        $countImgs = count($result, COUNT_NORMAL);
+                        $divel = "<div id=" . $rotation . " class='slideshow-container'>";
+                        $listimg = $result;
+                    } else {
+                        echo '<div class="error"><img src="./whiteLogo.png"></img><label style="font-family:RegularFont;">Programação não disponível</label></div>';
+                    }
                 } else {
-                    echo '<div class="error"><img src="./whiteLogo.png"></img><label style="font-family:RegularFont;">Esta pagina não existe</label></div>';
+                    $db_selectionTemp = mysqli_query($conn, "SELECT `id` FROM `list` WHERE `id` = '$list_temp' LIMIT 1 ");
+                    $resultTemp = mysqli_fetch_assoc($db_selectionTemp);
+                    $db_selection = mysqli_query($conn, "SELECT `id` FROM `list` WHERE `id` = '$listid' LIMIT 1 ");
+                    $result = mysqli_fetch_assoc($db_selection);
+                    if ($result) {
+                        $listid = $result['id'];
+                        $db_selectionTemp = mysqli_query($conn, "SELECT * FROM `contents` WHERE `listid` = '$list_temp'");
+                        $resultTemp = mysqli_fetch_all($db_selectionTemp, MYSQLI_ASSOC);
+                        $db_selection = mysqli_query($conn, "SELECT * FROM `contents` WHERE `listid` = '$listid'");
+                        $result = mysqli_fetch_all($db_selection, MYSQLI_ASSOC);
+                        $countImgs = count($result, COUNT_NORMAL);
+                        $divel = "<div id=" . $rotation . " class='slideshow-container'>";
+                        $listimg = $result;
+                        $temp_img = $resultTemp;
+                    } else {
+                        echo '<div class="error"><img src="./whiteLogo.png"></img><label style="font-family:RegularFont;">Programação não disponível</label></div>';
+                    }
                 }
             } else {
-                echo '<div class="error"><img src="./whiteLogo.png"></img><label style="font-family:RegularFont;">Esta pagina não existe</label></div>';
+                echo '<div class="error"><img src="./whiteLogo.png"></img><label style="font-family:RegularFont;">Programação não disponível</label></div>';
             }
         } else {
-            echo '<div class="error"><img src="./whiteLogo.png"></img><label style="font-family:RegularFont;">Esta pagina não existe</label></div>';
+            echo '<div class="error"><img src="./whiteLogo.png"></img><label style="font-family:RegularFont;">Programação não disponível</label></div>';
         }
     } else {
-        echo '<div class="error"><img src="./whiteLogo.png"></img><label style="font-family:RegularFont;">Esta pagina não existe</label></div>';
+        echo '<div class="error"><img src="./whiteLogo.png"></img><label style="font-family:RegularFont;">Programação não disponível</label></div>';
     }
     ?>
 
@@ -209,9 +236,26 @@ include_once 'conexao.php';
     ?>
 
     <?php
+    if (strtotime($dateStart) < strtotime(date('Y-m-d'))) {
+        if (strtotime($dateEnd) > strtotime(date('Y-m-d'))) {
+            foreach ($temp_img as $key => $value) {
+                echo "<div class='mySlides fade'>
+                <img src='http://indoor.cnxtv.com.br/api/uploads/" . $value['link'] . "'>
+              </div>";
+            }
+        }else{
+            echo null;
+        }
+    } else {
+        echo null;
+    }
+
+    ?>
+
+    <?php
     foreach ($listimg as $key => $value) {
         echo "<div class='mySlides fade'>
-        <img src='http://indoor.lcprojects.net/api/uploads/" . $value['link'] . "'>
+        <img src='http://indoor.cnxtv.com.br/api/uploads/" . $value['link'] . "'>
       </div>";
     }
     ?>
@@ -219,6 +263,9 @@ include_once 'conexao.php';
     <div style="text-align:center; visibility:hidden; display:none;">
         <?php
         foreach ($listimg as $key => $value) {
+            echo "<span class='dot' style='visibility:hidden; display:none'></span>";
+        }
+        foreach ($temp_img as $key => $value) {
             echo "<span class='dot' style='visibility:hidden; display:none'></span>";
         }
         ?>
@@ -247,7 +294,7 @@ include_once 'conexao.php';
             }
             slides[slideIndex - 1].style.display = "flex";
             dots[slideIndex - 1].className += " active";
-            setTimeout(showSlides, 8000); 
+            setTimeout(showSlides, 8000);
         }
     </script>
 </body>
