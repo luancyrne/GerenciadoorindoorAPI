@@ -19,7 +19,7 @@ if (!empty($_POST['name']) && !empty($_POST['password']) && !empty($_POST['store
         if ($result) {
             if ($store === $result['store']) {
                 if (password_verify($password, $result['password'])) {
-                    $key = 'cnxtelecom';
+                    $key = 'secret';
 
                     $header = [
                         'typ' => 'JWT',
@@ -78,7 +78,7 @@ if (!empty($_POST['name']) && !empty($_POST['password']) && !empty($_POST['store
         $result = mysqli_fetch_assoc($search);
         if ($result) {
             if (password_verify($password, $result['password'])) {
-                $key = 'cnxtelecom';
+                $key = 'secret';
 
                 $header = [
                     'typ' => 'JWT',

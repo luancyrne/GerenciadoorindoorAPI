@@ -19,7 +19,7 @@
             $sign = $token[2];
 
             //Conferir Assinatura
-            $valid = hash_hmac('sha256', $header . "." . $payload, 'cnxtelecom', true);
+            $valid = hash_hmac('sha256', $header . "." . $payload, 'secret', true);
             $valid = base64_encode($valid);
 
             if ($sign === $valid) {
