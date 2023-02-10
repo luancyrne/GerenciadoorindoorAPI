@@ -12,7 +12,7 @@ include_once 'conexao.php';
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CNX Telecom - Sistema de Gerenciamento Indoor</title>
+    <title>Gerenciador de Media Indoor</title>
     <style>
         @font-face {
             font-family: RegularFont;
@@ -240,7 +240,7 @@ include_once 'conexao.php';
         if (strtotime($dateEnd) > strtotime(date('Y-m-d'))) {
             foreach ($temp_img as $key => $value) {
                 echo "<div class='mySlides fade'>
-                <img src='http://indoor.cnxtv.com.br/api/uploads/" . $value['link'] . "'>
+                <img src='http://localhost/api/uploads/" . $value['link'] . "'>
               </div>";
             }
         }else{
@@ -255,7 +255,7 @@ include_once 'conexao.php';
     <?php
     foreach ($listimg as $key => $value) {
         echo "<div class='mySlides fade'>
-        <img src='http://indoor.cnxtv.com.br/api/uploads/" . $value['link'] . "'>
+        <img src='http://localhost/api/uploads/" . $value['link'] . "'>
       </div>";
     }
     ?>
