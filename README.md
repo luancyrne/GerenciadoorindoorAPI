@@ -28,6 +28,6 @@ This is a simple API created in PHP for connection with MySQL, in order to manag
 
 This project is used by the following companies:
 
-- <a href="http://cnx.net.br/"><img src="[https://www.cnx.net.br/wp-content/uploads/sites/11/2022/04/logopreta.png](https://raw.githubusercontent.com/luancyrne/GerenciadoorindoorAPI/master/whiteLogo.png)" width="150"></a>
+- <a href="http://cnx.net.br/"><img src="https://raw.githubusercontent.com/luancyrne/GerenciadoorindoorAPI/master/whiteLogo.png" width="150"></a>
 - <a href="http://supreis.com.br/"><img src="https://github.com/luancyrne/GerenciadoorindoorAPI/blob/master/download.jpeg" width="150"></a>
 
